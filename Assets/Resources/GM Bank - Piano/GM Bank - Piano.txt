@@ -1,0 +1,2 @@
+[BankFile]
+Piano1/sfz/0/0/i/
