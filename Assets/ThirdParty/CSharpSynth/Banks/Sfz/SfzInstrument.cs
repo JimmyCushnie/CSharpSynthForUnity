@@ -196,7 +196,7 @@ namespace CSharpSynth.Banks.Sfz
                                                 groupValues[6] = true;
                                                 break;
                                             case "volume":
-                                                Group.Volume = float.Parse(Rvalue[1]);
+                                                Group.Volume = float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture);
                                                 groupValues[7] = true;
                                                 break;
                                             case "loop_mode":
@@ -216,19 +216,19 @@ namespace CSharpSynth.Banks.Sfz
                                                 break;
                                             case "ampeg_release":
                                                 groupValues[9] = true;
-                                                Group.Release = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                Group.Release = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_attack":
                                                 groupValues[10] = true;
-                                                Group.Attack = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                Group.Attack = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_decay":
                                                 groupValues[11] = true;
-                                                Group.Decay = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                Group.Decay = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_hold":
                                                 groupValues[12] = true;
-                                                Group.Hold = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                Group.Hold = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "lovel":
                                                 groupValues[13] = true;
@@ -336,7 +336,7 @@ namespace CSharpSynth.Banks.Sfz
                                                 r.Root = int.Parse(Rvalue[1]);
                                                 break;
                                             case "volume":
-                                                r.Volume = float.Parse(Rvalue[1]);
+                                                r.Volume = float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture);
                                                 break;
                                             case "loop_mode":
                                                 switch (Rvalue[1])
@@ -353,16 +353,16 @@ namespace CSharpSynth.Banks.Sfz
                                                 }
                                                 break;
                                             case "ampeg_release":
-                                                r.Release = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                r.Release = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_attack":
-                                                r.Attack = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                r.Attack = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_decay":
-                                                r.Decay = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                r.Decay = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "ampeg_hold":
-                                                r.Hold = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1]));
+                                                r.Hold = SynthHelper.getSampleFromTime(this.SampleRate, float.Parse(Rvalue[1], System.Globalization.CultureInfo.InvariantCulture));
                                                 break;
                                             case "lovel":
                                                 r.LoVelocity = (byte)int.Parse(Rvalue[1]);
