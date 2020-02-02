@@ -1,5 +1,6 @@
 ﻿using System;
 using CSharpSynth.Banks;
+using UnityEngine;
 
 namespace CSharpSynth.Synthesis
 {
@@ -81,24 +82,27 @@ namespace CSharpSynth.Synthesis
         }
         public void Stop()
         {
-            if (hold == 0)
-            {
-                if (release == 0)
-                {
-                    state = VoiceState.None;
-                    inUse = false;
-                }
-                else
-                {
-                    state = VoiceState.Release;
-                    fadeCounter = release;
-                }
-            }
-            else
-            {
-                state = VoiceState.Hold;
-                fadeCounter = hold;
-            }
+            StopImmediately();
+
+            // TODO: The faceCount of release seems to be way to big (https://github.com/kewlniss/CSharpSynthForUnity/issues/6)
+            // if (hold == 0)
+            // {
+            //     if (release == 0)
+            //     {
+            //         state = VoiceState.None;
+            //         inUse = false;
+            //     }
+            //     else
+            //     {
+            //         state = VoiceState.Release;
+            //         fadeCounter = release;
+            //     }
+            // }
+            // else
+            // {
+            //     state = VoiceState.Hold;
+            //     fadeCounter = hold;
+            // }
         }
         public void StopImmediately()
         {
@@ -208,7 +212,7 @@ namespace CSharpSynth.Synthesis
                     }
                     //end of state management
                     //Decide how to sample based on channels available
-                    
+
                     //mono output
                     if (synth.Channels == 1)
                     {
