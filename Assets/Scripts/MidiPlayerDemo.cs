@@ -7,7 +7,7 @@ using CSharpSynth.Synthesis;
 using CSharpSynth.Midi;
 
 [RequireComponent(typeof(AudioSource))]
-public class MIDIPlayer : MonoBehaviour
+public class MidiPlayerDemo : MonoBehaviour
 {
     //Public
     //Check the Midi's file folder for different songs
