@@ -18,7 +18,7 @@ namespace CSharpSynth.Wave
             //if (System.IO.File.Exists(filename) == false)
             //    throw new System.IO.FileNotFoundException("Sample not found: " + Path.GetFileNameWithoutExtension(filename));
             name = Path.GetFileNameWithoutExtension(filename);
-            Debug.Log("filename: " + filename + " name " + name);
+            //Debug.Log("filename: " + filename + " name " + name);
             WaveFileReader WaveReader = new WaveFileReader(filename);
             IChunk[] chunks = WaveReader.ReadAllChunks();
             WaveReader.Close(); //Close the reader and the underlying stream.

@@ -49,7 +49,7 @@ namespace CSharpSynth.Banks
             //UnitySynth
             //loadStream(File.Open(bankfile, FileMode.Open), Path.GetDirectoryName(bankfile) + "\\", null, null);
             TextAsset bankFile = Resources.Load(bankfile) as TextAsset;
-            Debug.Log("loadBank(string bankfile) " + bankfile);
+            //Debug.Log("loadBank(string bankfile) " + bankfile);
             Stream bankStream = new MemoryStream(bankFile.bytes);
             this.loadStream(bankStream, Path.GetDirectoryName(bankfile) + "/", null, null);
             
@@ -69,7 +69,7 @@ namespace CSharpSynth.Banks
             //UnitySynth
             //loadStream(File.Open(lastbankpath, FileMode.Open), Path.GetDirectoryName(lastbankpath) + "\\", Programs, DrumPrograms);
             TextAsset lastBankPath = Resources.Load(lastbankpath) as TextAsset;
-            Debug.Log("loadBank(byte[] Programs, byte[] DrumPrograms) " + lastbankpath);
+            //Debug.Log("loadBank(byte[] Programs, byte[] DrumPrograms) " + lastbankpath);
             Stream bankStream = new MemoryStream(lastBankPath.bytes);
             this.loadStream(bankStream, Path.GetDirectoryName(lastbankpath) + "/", Programs, DrumPrograms);
         }
