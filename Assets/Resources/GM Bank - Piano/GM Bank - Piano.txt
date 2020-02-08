@@ -1,2 +1,4 @@
 [BankFile]
 Piano1/sfz/0/0/i/
+Piano2/sfz/1/1/i/
+Piano3/sfz/2/2/i/
