@@ -81,10 +81,10 @@ namespace CSharpSynth.Sequencer
             get { return looping; }
             set { looping = value; }
         }
-        public bool LoadMidi(MidiFile midi, bool UnloadUnusedInstruments)
+        public MidiFile LoadMidi(MidiFile midi, bool UnloadUnusedInstruments)
         {
             if (playing == true)
-                return false;
+                return null;
             _MidiFile = midi;
             if (_MidiFile.SequencerReady == false)
             {
@@ -106,7 +106,7 @@ namespace CSharpSynth.Sequencer
                         }
                     }
                     //Set total time to proper value
-                    _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length-1].deltaTime;
+                    _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length - 1].deltaTime;
                     //reset tempo
                     _MidiFile.BeatsPerMinute = 120;
                     //mark midi as ready for sequencing
@@ -116,7 +116,7 @@ namespace CSharpSynth.Sequencer
                 {
                     //UnitySynth
                     Debug.Log("Error Loading Midi:\n" + ex.Message);
-                    return false;
+                    return null;
                 }
             }
             blockList.Clear();
@@ -136,12 +136,12 @@ namespace CSharpSynth.Sequencer
                     synth.SwitchBank(BankManager.Count - 1);
                 }
             }
-            return true;
+            return _MidiFile;
         }
-        public bool LoadMidi(string file, bool UnloadUnusedInstruments)
+        public MidiFile LoadMidi(string file, bool UnloadUnusedInstruments)
         {
             if (playing == true)
-                return false;
+                return null;
             MidiFile mf = null;
             try
             {
@@ -151,7 +151,7 @@ namespace CSharpSynth.Sequencer
             {
                 //UnitySynth
                 Debug.Log("Error Loading Midi:\n" + ex.Message);
-                return false;
+                return null;
             }
             return LoadMidi(mf, UnloadUnusedInstruments);
         }
@@ -355,7 +355,7 @@ namespace CSharpSynth.Sequencer
             while (eventIndex < _MidiFile.Tracks[0].EventCount && _MidiFile.Tracks[0].MidiEvents[eventIndex].deltaTime < (sampleTime + amount))
             {
                 if (_MidiFile.Tracks[0].MidiEvents[eventIndex].midiChannelEvent != MidiHelper.MidiChannelEvent.Note_On)
-                    ProcessMidiEvent(_MidiFile.Tracks[0].MidiEvents[eventIndex]);               
+                    ProcessMidiEvent(_MidiFile.Tracks[0].MidiEvents[eventIndex]);
                 eventIndex++;
             }
             sampleTime = sampleTime + amount;
