@@ -84,47 +84,42 @@ namespace CSharpSynth.Sequencer
         public MidiFile LoadMidi(MidiFile midi, bool UnloadUnusedInstruments)
         {
             if (playing == true)
+            {
                 return null;
+            }
+
             _MidiFile = midi;
             if (_MidiFile.SequencerReady == false)
             {
-                try
+                //Combine all tracks into 1 track that is organized from lowest to highest abs time
+                _MidiFile.CombineTracks();
+                //Convert delta time to sample time
+                eventIndex = 0;
+                uint lastSample = 0;
+                for (int x = 0; x < _MidiFile.Tracks[0].MidiEvents.Length; x++)
                 {
-                    //Combine all tracks into 1 track that is organized from lowest to highest abs time
-                    _MidiFile.CombineTracks();
-                    //Convert delta time to sample time
-                    eventIndex = 0;
-                    uint lastSample = 0;
-                    for (int x = 0; x < _MidiFile.Tracks[0].MidiEvents.Length; x++)
+                    _MidiFile.Tracks[0].MidiEvents[x].deltaTime = lastSample + (uint)DeltaTimetoSamples(_MidiFile.Tracks[0].MidiEvents[x].deltaTime);
+                    lastSample = _MidiFile.Tracks[0].MidiEvents[x].deltaTime;
+                    //Update tempo
+                    if (_MidiFile.Tracks[0].MidiEvents[x].midiMetaEvent == MidiHelper.MidiMetaEvent.Tempo)
                     {
-                        _MidiFile.Tracks[0].MidiEvents[x].deltaTime = lastSample + (uint)DeltaTimetoSamples(_MidiFile.Tracks[0].MidiEvents[x].deltaTime);
-                        lastSample = _MidiFile.Tracks[0].MidiEvents[x].deltaTime;
-                        //Update tempo
-                        if (_MidiFile.Tracks[0].MidiEvents[x].midiMetaEvent == MidiHelper.MidiMetaEvent.Tempo)
-                        {
-                            _MidiFile.BeatsPerMinute = MidiHelper.MicroSecondsPerMinute / System.Convert.ToUInt32(_MidiFile.Tracks[0].MidiEvents[x].Parameters[0]);
-                        }
+                        _MidiFile.BeatsPerMinute = MidiHelper.MicroSecondsPerMinute / System.Convert.ToUInt32(_MidiFile.Tracks[0].MidiEvents[x].Parameters[0]);
                     }
-                    //Set total time to proper value
-                    _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length - 1].deltaTime;
-                    //reset tempo
-                    _MidiFile.BeatsPerMinute = 120;
-                    //mark midi as ready for sequencing
-                    _MidiFile.SequencerReady = true;
                 }
-                catch (Exception ex)
-                {
-                    //UnitySynth
-                    Debug.Log("Error Loading Midi:\n" + ex.Message);
-                    return null;
-                }
+                //Set total time to proper value
+                _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length - 1].deltaTime;
+                //reset tempo
+                _MidiFile.BeatsPerMinute = 120;
+                //mark midi as ready for sequencing
+                _MidiFile.SequencerReady = true;
             }
             blockList.Clear();
             if (UnloadUnusedInstruments == true)
             {
                 if (synth.SoundBank == null)
-                {//If there is no bank warn the developer =)
-                    Debug.Log("No Soundbank loaded !");
+                {
+                    //If there is no bank warn the developer =)
+                    Debug.LogWarning("No Soundbank loaded !");
                 }
                 else
                 {
@@ -138,22 +133,27 @@ namespace CSharpSynth.Sequencer
             }
             return _MidiFile;
         }
-        public MidiFile LoadMidi(string file, bool UnloadUnusedInstruments)
+        public MidiFile LoadMidiFromTextAsset(string file, bool UnloadUnusedInstruments)
         {
             if (playing == true)
-                return null;
-            MidiFile mf = null;
-            try
             {
-                mf = new MidiFile(file);
-            }
-            catch (Exception ex)
-            {
-                //UnitySynth
-                Debug.Log("Error Loading Midi:\n" + ex.Message);
                 return null;
             }
-            return LoadMidi(mf, UnloadUnusedInstruments);
+
+            MidiFile mf = MidiFile.CreateFromTextAsset(file);
+            MidiFile result = LoadMidi(mf, UnloadUnusedInstruments);
+            return result;
+        }
+        public MidiFile LoadMidiFromFile(string file, bool UnloadUnusedInstruments)
+        {
+            if (playing == true)
+            {
+                return null;
+            }
+
+            MidiFile mf = MidiFile.CreateFromFile(file);
+            MidiFile result = LoadMidi(mf, UnloadUnusedInstruments);
+            return result;
         }
         public void Play()
         {
