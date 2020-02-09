@@ -47,26 +47,18 @@ namespace CSharpSynth.Midi
             get { return mheader; }
         }
         //--Public Methods
-        public MidiFile(string filename)
+        public static MidiFile CreateFromFile(string filePath)
         {
-            Stream midiStream = null;
-            try
-            {
-                //UnitySynth
-                //midiStream = File.Open(filename, FileMode.Open);
-                TextAsset midiFileName = Resources.Load(filename) as TextAsset;
-                midiStream = new MemoryStream(midiFileName.bytes);
-                loadStream(midiStream);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Midi Failed to Load!", ex);
-            }
-            finally
-            {
-                if (midiStream != null)
-                    midiStream.Dispose();
-            }
+            Stream midiStream = File.Open(filePath, FileMode.Open);
+            MidiFile result = new MidiFile(midiStream);
+            return result;
+        }
+        public static MidiFile CreateFromTextAsset(string resourcePath)
+        {
+            TextAsset midiFileName = Resources.Load(resourcePath) as TextAsset;
+            Stream midiStream = new MemoryStream(midiFileName.bytes);
+            MidiFile result = new MidiFile(midiStream);
+            return result;
         }
         public List<MidiEvent> getAllMidiEventsofType(MidiHelper.MidiChannelEvent eventChannelType, MidiHelper.MidiMetaEvent eventMetaType)
         {
@@ -88,8 +80,8 @@ namespace CSharpSynth.Midi
             {
                 for (int i = 0; i < tracks[x].MidiEvents.Length; i++)
                 {
-                    if (tracks[x].MidiEvents[i].midiMetaEvent == eventMetaType 
-                        && tracks[x].MidiEvents[i].midiChannelEvent == eventChannelType 
+                    if (tracks[x].MidiEvents[i].midiMetaEvent == eventMetaType
+                        && tracks[x].MidiEvents[i].midiChannelEvent == eventChannelType
                         && tracks[x].MidiEvents[i].channel == channel)
                         matchList.Add(tracks[x].MidiEvents[i]);
                 }
@@ -195,6 +187,22 @@ namespace CSharpSynth.Midi
             */
         }
         //--Private Methods
+        private MidiFile(Stream midiStream)
+        {
+            try
+            {
+                loadStream(midiStream);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (midiStream != null)
+                    midiStream.Dispose();
+            }
+        }
         private void loadStream(Stream stream)
         {
             byte[] tmp = new byte[4];
